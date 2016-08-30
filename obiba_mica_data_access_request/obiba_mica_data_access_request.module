@@ -33,7 +33,7 @@ function obiba_mica_data_access_request_menu() {
     'access callback' => TRUE,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 2,
+    'weight' => 0,
   );
 
   $items['mica/data_access/requests/ws'] = array(
@@ -150,7 +150,8 @@ function obiba_mica_data_access_request_menu() {
     'page callback' => 'obiba_mica_data_access_request_users',
     'page arguments' => array(3),
     'file' => 'obiba_mica_data_access_request_service.inc',
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK
   );
 
   if (module_exists('obiba_mica_research_project')) {
@@ -175,7 +176,7 @@ function obiba_mica_data_access_request_menu() {
     'access arguments' => array('dao'),
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 4
+    'weight' => 1000
   );
   return $items;
 }
@@ -227,6 +228,7 @@ function obiba_mica_data_access_request_load_menus() {
     'title' => variable_get('access_requests_page_title', 'My Access Requests'),
     'menu_name' => 'main-menu',
     'options' => array('fragment' => 'data-access-requests'),
+    'type' => MENU_NORMAL_ITEM,
     'weight' => 0,
   );
   return $items;
