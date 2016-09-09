@@ -133,6 +133,13 @@
         </tr>
       <?php endif; ?>
 
+      <?php if (!empty($population->selectionCriteria->criteria)): ?>
+        <t>
+          <th><?php print t('Criteria') ?></th>
+          <td><?php print implode(', ', $population->selectionCriteria->criteria) ?></td>
+        </t>
+      <?php endif ?>
+
       <?php if (!empty($population->selectionCriteria->healthStatus)): ?>
         <tr>
           <th><?php print t('Health Status') ?></th>
