@@ -17,7 +17,7 @@
 
 <?php if (!empty($population->description)): ?>
   <p>
-    <?php print obiba_mica_commons_get_localized_field($population, 'description'); ?>
+    <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($population, 'description')); ?>
   </p>
 <?php endif; ?>
 
@@ -173,7 +173,7 @@
       <?php if (!empty($population->selectionCriteria->info)): ?>
         <tr>
           <th><?php print t('Supplementary Information') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->selectionCriteria, 'info'); ?></td>
+          <td><?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($population->selectionCriteria, 'info')); ?></td>
         </tr>
       <?php endif; ?>
       </tbody>
@@ -227,7 +227,7 @@
       <?php if (!empty($population->info)): ?>
         <tr>
           <th><?php print t('Supplementary Information') ?></th>
-          <td><p> <?php print obiba_mica_commons_get_localized_field($population, 'info'); ?></p></td>
+          <td><p> <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($population, 'info')); ?></p></td>
         </tr>
       <?php endif; ?>
 
