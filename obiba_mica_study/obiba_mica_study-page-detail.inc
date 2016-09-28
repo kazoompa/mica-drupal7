@@ -180,7 +180,9 @@ function obiba_mica_study_page_detail($study_id) {
     }
     else {
       $populations = obiba_mica_study_get_populations_detail($study_dto, NULL, NULL, $flat_study_attachments);
+      if(!empty($populations)){
       obiba_mica_commons_set_cache('populations_detail_cache-' . $study_id, $populations);
+      }
     }
 
     if (obiba_mica_study_have_timeline($study_dto)) {

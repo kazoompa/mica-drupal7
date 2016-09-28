@@ -67,7 +67,9 @@ function obiba_mica_dataset_page_detail($dataset_id) {
     }
     else {
       $coverage = obiba_mica_dataset_coverage($dataset_dto->id);
-      obiba_mica_commons_set_cache('dataset_coverage-' . $dataset_dto->id, $coverage);
+      if(!empty($coverage)){
+        obiba_mica_commons_set_cache('dataset_coverage-' . $dataset_dto->id, $coverage);
+      }
     }
   }
   $dataset_theme = obiba_mica_commons_get_cache('dataset_theme-' . $dataset_id);
@@ -274,7 +276,9 @@ function obiba_mica_dataset_Variables_table_ajax_header($dataset_type, $dataset_
     }
 
     $data['header'] = $header;
-    obiba_mica_commons_set_cache('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id, $data);
+    if(!empty($header)){
+      obiba_mica_commons_set_cache('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id, $data);
+    }
   }
   return drupal_json_output($data);
 }
@@ -349,7 +353,9 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
     $data['iTotalRecords'] = $variables_dataset->total;
     $data['iTotalDisplayRecords'] = $variables_dataset->total;
     $data['aaData'] = $data_variable;
-    obiba_mica_commons_set_cache('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size, $data);
+    if(!empty($data_variable)){
+     obiba_mica_commons_set_cache('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size, $data);
+    }
   }
   // Must be update in each request (DataTable requirement in ajx call context)
   $data['sEcho'] = $_GET["sEcho"] ? $_GET["sEcho"] : 1;
