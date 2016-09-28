@@ -39,7 +39,9 @@ class ObibaSearchResources extends MicaClient {
         $this->setLastResponse($client->lastResponse);
         $array_response = json_decode($data);
         $this->result_resource_query = $array_response;
-        obiba_mica_commons_set_cache($resources, $array_response);
+        if(!$this->IsEmptyData($resources, $array_response)){
+          obiba_mica_commons_set_cache($resources, $array_response);
+        }
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {
@@ -179,4 +181,54 @@ class ObibaSearchResources extends MicaClient {
     $query_search .= ')))&display=list&type=variables';
     return $query_search;
   }
+
+  public function IsEmptyData($resources, $stored_data) {
+    $entity_resource = explode('/', $resources);
+    switch ($entity_resource[1]) {
+      case 'taxonomy':
+        if (!isset($stored_data)) {
+          return TRUE;
+        }
+        break;
+      case 'taxonomies' :
+        if (!isset($stored_data)) {
+          return TRUE;
+        }
+        break;
+
+      case 'variables' :
+        $coverage_resource = explode('?', $entity_resource[2]);
+        if ($coverage_resource[0] !== '_coverage') {
+          if (empty($stored_data->variableResultDto->totalHits)) {
+            return TRUE;
+          }
+        }
+        else{
+          return TRUE;
+        }
+        break;
+      case 'datasets' :
+        if (empty($stored_data->datasetResultDto->totalHits)) {
+          return TRUE;
+        }
+        break;
+      case 'studies' :
+        if (!isset($stored_data->studyResultDto->totalHits)) {
+          return TRUE;
+        }
+        break;
+      case 'networks' :
+        if (empty($stored_data->networkResultDto->totalHits)) {
+          return TRUE;
+        }
+        break;
+      default :
+        if (empty($stored_data)) {
+          return TRUE;
+        }
+
+    }
+    return FALSE;
+  }
+
 }

@@ -89,7 +89,9 @@ class MicaConfigResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = json_decode($data);
+        if(!empty($this->result_resource_query)){
         obiba_mica_commons_set_cache($config_resource, $this->result_resource_query);
+        }
       } catch (HttpClientException $e) {
         watchdog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
             array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
