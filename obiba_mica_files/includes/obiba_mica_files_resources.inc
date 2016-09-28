@@ -57,8 +57,11 @@ class MicaFilesResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = $this->wrapAttachments($entity_type, $entity_id, json_decode($data));
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        $files_wrapper = json_decode($data);
+        $this->result_resource_query = $this->wrapAttachments($entity_type, $entity_id, $files_wrapper);
+        if(!empty($files_wrapper)){
+          obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {
@@ -104,7 +107,9 @@ class MicaFilesResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data;
-        obiba_mica_commons_set_cache($resource_query, $data);
+        if(!empty($this->result_resource_query)){
+          obiba_mica_commons_set_cache($resource_query, $data);
+        }
         return $data;
       }
       catch (HttpClientException $e) {
@@ -145,7 +150,9 @@ class MicaFilesResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data;
-        obiba_mica_commons_set_cache($resource_query, $data);
+        if(!empty($this->result_resource_query)){
+          obiba_mica_commons_set_cache($resource_query, $data);
+        }
         return $data;
       }
       catch (HttpClientException $e) {

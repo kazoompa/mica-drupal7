@@ -235,7 +235,9 @@ function obiba_mica_app_angular_get_angular_template($angular_template) {
   }
   else {
     $angular_template = theme($angular_template, array('locale_language' => $language->language));
+    if(!empty($angular_template)){
     obiba_mica_commons_set_cache('angular-template-cache-' . $angular_template, $angular_template);
+    }
   }
   print $angular_template;
 }
@@ -254,7 +256,9 @@ function obiba_mica_app_angular_get_angular_translation($lang) {
   else {
     $mica_config = new MicaConfigResource();
     $translation = $mica_config->getTranslations($lang);
+    if(!empty($translation)){
     obiba_mica_commons_set_cache('translation-' . $lang, $translation);
+    }
   }
 
   print $translation;

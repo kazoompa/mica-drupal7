@@ -66,8 +66,11 @@ class MicaStudyResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = new StudyJoinResponseWrapper(json_decode($data));
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        $studies_wrapper = json_decode($data);
+        $this->result_resource_query = new StudyJoinResponseWrapper($studies_wrapper);
+        if(!empty($studies_wrapper->studyResultDto->totalHits)){
+          obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {
@@ -109,7 +112,9 @@ class MicaStudyResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data ? json_decode($data) : NULL;
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        if($this->result_resource_query){
+         obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {

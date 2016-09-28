@@ -66,8 +66,11 @@ class MicaNetworkResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $result_resource_query = new NetworkJoinResponseWrapper(json_decode($data));
-        obiba_mica_commons_set_cache($resource_query, $result_resource_query);
+        $networks_wrapper = json_decode($data);
+        $result_resource_query = new NetworkJoinResponseWrapper($networks_wrapper);
+        if(!empty($networks_wrapper->networkResultDto->totalHits)){
+          obiba_mica_commons_set_cache($resource_query, $result_resource_query);
+        }
         return $result_resource_query;
       }
       catch (HttpClientException $e) {
@@ -110,7 +113,9 @@ class MicaNetworkResource extends MicaClient {
         if (!empty($response->networkResultDto) && !empty($response->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
           $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
         }
-        obiba_mica_commons_set_cache($resource_query, $result_resource_query);
+        if(!empty($result_resource_query)){
+          obiba_mica_commons_set_cache($resource_query, $result_resource_query);
+        }
         return $result_resource_query;
       }
       catch (HttpClientException $e) {
@@ -151,7 +156,9 @@ class MicaNetworkResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data ? json_decode($data) : NULL;
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        if(!empty($this->result_resource_query)){
+          obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {
