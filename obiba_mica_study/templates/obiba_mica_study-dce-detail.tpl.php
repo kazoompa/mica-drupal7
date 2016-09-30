@@ -55,17 +55,13 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                 <td>
                   <ul>
                     <?php foreach ($dce->dataSources as $dataSource): ?>
-                      <?php if ($dataSource !== 'others'): ?>
                       <li>
                         <?php print obiba_mica_commons_clean_string($dataSource); ?>
+                        <?php if ($dataSource == 'others'): ?>
+                          : <?php print obiba_mica_commons_get_localized_field($dce, 'otherDataSources'); ?>
+                        <?php endif; ?>
                       </li>
-                      <?php endif; ?>
                     <?php endforeach; ?>
-                    <?php if (!empty($dce->otherDataSources)): ?>
-                      <li>
-                        <?php print obiba_mica_commons_get_localized_field($dce, 'otherDataSources'); ?>
-                      </li>
-                    <?php endif; ?>
                   </ul>
                 </td>
               </tr>
@@ -92,17 +88,13 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                 <td>
                   <ul>
                     <?php foreach ($dce->bioSamples as $samples): ?>
-                      <?php if ($samples !== 'others'): ?>
                       <li>
                         <?php print obiba_mica_commons_clean_string($samples); ?>
+                        <?php if ($samples == 'others'): ?>
+                          : <?php print obiba_mica_commons_get_localized_field($dce, 'otherBioSamples'); ?>
+                        <?php endif; ?>
                       </li>
-                      <?php endif; ?>
                     <?php endforeach; ?>
-                    <?php if (!empty($dce->otherBioSamples)): ?>
-                      <li>
-                        <?php print obiba_mica_commons_get_localized_field($dce, 'otherBioSamples'); ?>
-                      </li>
-                    <?php endif; ?>
                   </ul>
                 </td>
               </tr>
