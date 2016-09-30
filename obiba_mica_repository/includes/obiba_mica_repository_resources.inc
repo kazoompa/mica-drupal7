@@ -40,7 +40,7 @@ class ObibaSearchResources extends MicaClient {
         $array_response = json_decode($data);
         $this->result_resource_query = $array_response;
         if(!$this->IsEmptyData($resources, $array_response)){
-          obiba_mica_commons_set_cache($resources, $array_response);
+          obiba_mica_commons_set_cache('repository-' . $resources, $array_response);
         }
         return $this->result_resource_query;
       }
@@ -60,31 +60,35 @@ class ObibaSearchResources extends MicaClient {
     return $this->result_resource_query;
   }
 
+  function __call($name, $arguments) {
+    // TODO: Implement __call() method.
+  }
+
   public function searchQuery($type, $query) {
     $resource = '/' . $type . '/_rql?query=' . $query;
-    return $this->getCache($resource)->httpRequestGetBuilder($resource);
+    return $this->getCache('repository-' . $resource)->httpRequestGetBuilder($resource);
   }
 
   public function taxonomiesSearch($query, $target, $locale) {
     $resource = '/taxonomies/_search?query=' . rawurlencode($query)
       . (!empty($target) ? '&target=' . $target : '')
       . (!empty($locale) ? '&locale=' . $locale : '');
-    return $this->getCache($resource)->httpRequestGetBuilder($resource);
+    return $this->getCache('repository-' . $resource)->httpRequestGetBuilder($resource);
   }
 
   public function taxonomiesFilter($target) {
     $resource = '/taxonomies/_filter?target=' . $target;
-    return $this->getCache($resource)->httpRequestGetBuilder($resource);
+    return $this->getCache('repository-' . $resource)->httpRequestGetBuilder($resource);
   }
 
   public function taxonomyFilter($name, $target) {
     $resource = '/taxonomy/' . $name . '/_filter?target=' . $target;
-    return $this->getCache($resource)->httpRequestGetBuilder($resource);
+    return $this->getCache('repository-' . $resource)->httpRequestGetBuilder($resource);
   }
 
   public function variablesCoverage($query) {
     $resource = '/variables/_coverage?query=' . $query;
-    return $this->getCache($resource)->httpRequestGetBuilder($resource);
+    return $this->getCache('repository-' . $resource)->httpRequestGetBuilder($resource);
   }
 
   public function variablesCoverageDownload($query, $header_accept) {
