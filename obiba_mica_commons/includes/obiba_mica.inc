@@ -614,6 +614,9 @@ class MicaClient {
     if (!empty($cached_result)) {
       $this->result_resource_query = $cached_result;
     }
+    else {
+      unset($this->result_resource_query);
+    }
     return $this;
   }
 }
