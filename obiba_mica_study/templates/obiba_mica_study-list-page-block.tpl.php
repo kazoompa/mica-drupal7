@@ -75,7 +75,12 @@
         <?php if (!empty($study->designs) || !empty($study->targetNumber)) : ?>
 
             <?php if (!empty($study->designs)): print t('Study design') ?>:
-              <span><?php print implode(', ', obiba_mica_commons_clean_string($study->designs)) ?></span>
+          <?php
+          $study_designs = array_map(function ($str) {
+            return obiba_mica_commons_clean_string($str);
+          }, $study->designs);
+          ?>
+              <span><?php print implode(', ', $study_designs) ?></span>
             <?php endif; ?>
             <?php
             if (!empty($study->targetNumber)):

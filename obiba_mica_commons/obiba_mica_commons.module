@@ -15,6 +15,8 @@
  */
 
 const HEADER_JSON = 'application/json';
+$path_module_commons = drupal_get_path('module', 'obiba_mica_commons');
+include_once($path_module_commons . '/includes/obiba_mica_commons_taxonomy_resource.inc');
 
 /**
  * Implements hook_user_logout().
@@ -191,10 +193,26 @@ function obiba_mica_commons_datatables_multi_Lang() {
  * Add external js dataTables.
  */
 function obiba_mica_commons_datatables_external_source() {
-  drupal_add_js('https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js', array('external', 'scope' => 'footer', 'weight' => 10));
-  drupal_add_js('https://cdn.datatables.net/fixedcolumns/3.0.2/js/dataTables.fixedColumns.min.js', array('external', 'scope' => 'footer', 'weight' => 20));
-  drupal_add_js('https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js', array('external', 'scope' => 'footer', 'weight' => 30));
-  drupal_add_css('https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css', array('external', 'scope' => 'footer', 'weight' => 40));
+  drupal_add_js('https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js', array(
+    'external',
+    'scope' => 'footer',
+    'weight' => 10
+  ));
+  drupal_add_js('https://cdn.datatables.net/fixedcolumns/3.0.2/js/dataTables.fixedColumns.min.js', array(
+    'external',
+    'scope' => 'footer',
+    'weight' => 20
+  ));
+  drupal_add_js('https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js', array(
+    'external',
+    'scope' => 'footer',
+    'weight' => 30
+  ));
+  drupal_add_css('https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css', array(
+    'external',
+    'scope' => 'footer',
+    'weight' => 40
+  ));
 }
 
 /**
@@ -207,18 +225,45 @@ function obiba_mica_commons_datatables_external_source() {
  *   A clear string.
  */
 function obiba_mica_commons_clean_string($str) {
-  if (empty($str)) {
-    return $str;
+  $taxonomies = &drupal_static(__FUNCTION__);
+  if (!isset($taxonomies)) {
+    $taxonomies = obiba_mica_commons_get_taxonomies_by_entity('study');
   }
-  if (is_array($str)) {
-    $nstr = array();
-    foreach ($str as $k => $v) {
-      $nstr[$k] = t(obiba_mica_commons_clean_string($v));
-    }
-    return $nstr;
+  global $language;
+  if (!empty($str)) {
+    $translated_str = obiba_mica_commons_get_translated_taxonomies($taxonomies, $str, $language->language);
   }
+  return $translated_str;
+}
 
-  return t(str_replace('_', ' ', $str));
+/**
+ * Get translated taxonomies
+ */
+
+function obiba_mica_commons_get_translated_taxonomies($taxonomies, $str, $local) {
+    foreach ($taxonomies as $taxonomy) {
+      foreach ($taxonomy->vocabularies as $vocabulary) {
+        if (!empty($vocabulary->terms)) {
+          foreach ($vocabulary->terms as $term) {
+            if ($term->name == $str) {
+              if (!empty($local) && $local !== 'und') {
+                return $translation = obiba_mica_commons_get_localized_field($term, 'title');
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+/**
+ * Get taxonomies by entity target
+ *
+ */
+function obiba_mica_commons_get_taxonomies_by_entity($entity_target) {
+  $service = new MicaTaxonomyResource();
+  $taxonomies = $service->getTaxonomySummaries('_filter?target=' . $entity_target);
+  return $taxonomies;
 }
 
 /**
@@ -870,7 +915,7 @@ function obiba_mica_commons_progress($start_date, $end_date) {
 
 /**
  * Make a progress bar markup from the provided dates.
- * 
+ *
  * @param $start_date
  * @param $end_date
  * @return string
