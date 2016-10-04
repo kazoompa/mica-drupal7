@@ -379,7 +379,9 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
       $stat_tab['table'] = $statistics->asTable();
       $stat_tab['chart'] = $statistics->asChart();
       $statistics_variable = $stat_tab;
+      if(!empty($statistics_variable)){
       obiba_mica_commons_set_cache('variable-statistics-' . $variable_id, $statistics_variable);
+      }
     }
     else {
       cache_clear_all('variable-statistics-' . $variable_id);

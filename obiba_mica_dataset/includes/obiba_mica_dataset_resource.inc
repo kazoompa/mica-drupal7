@@ -83,8 +83,11 @@ class MicaDatasetResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      $this->result_resource_query = new DatasetJoinResponseWrapper(json_decode($data));
-      obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+      $datasets_wrapper = json_decode($data);
+      $this->result_resource_query = new DatasetJoinResponseWrapper($datasets_wrapper);
+      if(!empty($datasets_wrapper->datasetResultDto->totalHits)){
+        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+      }
       return $this->result_resource_query;
     }
     catch (HttpClientException $e) {
@@ -130,7 +133,9 @@ class MicaDatasetResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data ? json_decode($data) : NULL;
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        if(!empty($this->result_resource_query)){
+          obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {
@@ -182,7 +187,6 @@ class MicaDatasetResource extends MicaClient {
     $client = $this->client();
     try {
       $data = $client->execute($request);
-
       $this->setLastResponse($client->lastResponse);
       if (!empty($detail)) {
         return json_decode($data);
@@ -387,7 +391,9 @@ class MicaDatasetResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data ? json_decode($data) : NULL;
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        if(!empty($this->result_resource_query)){
+          obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {

@@ -125,7 +125,9 @@ class MicaResearchProjectResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = json_decode($data);
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        if(!empty($this->result_resource_query)){
+          obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
       } catch (HttpClientException $e) {
         $this->result_resource_query = NULL;
