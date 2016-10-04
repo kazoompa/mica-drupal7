@@ -194,7 +194,12 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
               <tr>
                 <th><?php print t('Study Design') ?></th>
                 <td>
-                  <?php print implode(', ', obiba_mica_commons_clean_string($dataset_type_dto->studyTable->studySummary->designs)); ?>
+                  <?php
+                  $study_designs = array_map(function ($str) {
+                    return obiba_mica_commons_clean_string($str);
+                  }, $dataset_type_dto->studyTable->studySummary->designs);
+
+                  print implode(', ', $study_designs); ?>
                 </td>
               </tr>
               <tr>

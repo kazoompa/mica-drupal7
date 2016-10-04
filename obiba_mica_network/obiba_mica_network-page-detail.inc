@@ -310,13 +310,16 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
     foreach ($study_summaries as $study_summary) {
       $acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
       $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
+      $study_designs = array_map(function ($str) {
+        return obiba_mica_commons_clean_string($str);
+      }, $study_summary->designs);
       $rows[] = array(
         $study_summary->published ? MicaClientAnchorHelper::study($study_summary) : $acronym,
         $name,
-        implode(', ', isset($study_summary->designs) ?  obiba_mica_commons_clean_string($study_summary->designs) : array()),
+        implode(', ', isset($study_summary->designs) ? $study_designs : array()),
         !empty($study_summary->targetNumber->noLimit) && $study_summary->targetNumber->noLimit === TRUE ? t('No Limit') :
           (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
-        isset($study_summary->countries)?obiba_mica_commons_countries($study_summary->countries) : NULL,
+        isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
         empty($study_summary->variables)
           ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id, FALSE, $query)
       );
