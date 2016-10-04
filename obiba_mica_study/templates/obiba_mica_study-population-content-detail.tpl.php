@@ -47,7 +47,7 @@
             <?php
             $studies = obiba_mica_commons_get_localized_dtos_field($population->recruitment, 'studies');
             ?>
-            <?php obiba_mica_commons_iterate_field($studies); ?>
+            <?php print implode(', ', $studies); ?>
           </td>
         </tr>
       <?php endif; ?>
@@ -141,15 +141,21 @@
           <th><?php print t('Ethnic Origin') ?></th>
           <td>
             <?php $ehtnic_origins = obiba_mica_commons_get_localized_dtos_field($population->selectionCriteria, 'ethnicOrigin'); ?>
-            <?php obiba_mica_commons_iterate_field($ehtnic_origins); ?>
+            <?php print implode(', ', $ehtnic_origins) ?>
           </td>
+
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($population->selectionCriteria->criteria)): ?>
         <t>
           <th><?php print t('Criteria') ?></th>
-          <td><?php print implode(', ', $population->selectionCriteria->criteria) ?></td>
+          <?php
+          $criteria = array_map(function ($str) {
+          return obiba_mica_commons_clean_string($str);
+          }, $population->selectionCriteria->criteria);
+          ?>
+          <td><?php print implode(', ', $criteria) ?></td>
         </t>
       <?php endif ?>
 
@@ -158,7 +164,7 @@
           <th><?php print t('Health Status') ?></th>
           <td>
             <?php $health_status = obiba_mica_commons_get_localized_dtos_field($population->selectionCriteria, 'healthStatus'); ?>
-            <?php obiba_mica_commons_iterate_field($health_status); ?>
+            <?php print implode(', ', $health_status)?>
           </td>
         </tr>
       <?php endif; ?>
