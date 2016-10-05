@@ -14,6 +14,7 @@
  * MicaStudyResource class
  */
 
+include_once('obiba_mica.inc');
 /**
  * Class MicaStudyResource
  */
