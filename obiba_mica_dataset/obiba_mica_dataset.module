@@ -14,6 +14,8 @@
  * Code for obiba_mica_dataset module.
  */
 
+$path_module_commons = drupal_get_path('module', 'obiba_mica');
+include_once($path_module_commons . '/obiba_mica.constants.inc');
 include_once('obiba_mica_dataset_admin_form.inc');
 
 /**
