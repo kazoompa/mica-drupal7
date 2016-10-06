@@ -124,5 +124,4 @@ class MicaStudyResource extends MicaClient {
     }
     return $this->result_resource_query;
   }
-
 }
