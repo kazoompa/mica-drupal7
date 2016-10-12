@@ -310,9 +310,11 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
     foreach ($study_summaries as $study_summary) {
       $acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
       $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
-      $study_designs = array_map(function ($str) {
-        return obiba_mica_commons_clean_string($str);
-      }, $study_summary->designs);
+      if(!empty($study_summary->designs)){
+        $study_designs = array_map(function ($str) {
+          return obiba_mica_commons_clean_string($str);
+        }, $study_summary->designs);
+      }
       $rows[] = array(
         $study_summary->published ? MicaClientAnchorHelper::study($study_summary) : $acronym,
         $name,
