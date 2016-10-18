@@ -347,7 +347,7 @@ function obiba_mica_drush_obiba_progressbar() {
 function obiba_mica_drush_download_js_dependencies(){
 
   $path = drush_get_option('path', drush_get_context('DRUSH_DRUPAL_ROOT')) . '/sites/all/libraries';
-  $repository = drush_get_option('repo', variable_get('mica-drupal-js-libraries-version', '1.2.3'));
+  $repository = drush_get_option('repo', variable_get('mica-drupal-js-libraries-version', '1.5.0'));
 
   drush_log(dt(">> Download root path: $path"), 'success');
   drush_log(dt(">> Repository name: $repository"), 'success');
