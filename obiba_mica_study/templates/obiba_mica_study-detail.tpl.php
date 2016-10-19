@@ -160,7 +160,7 @@
                     <li>
                       <?php print obiba_mica_commons_clean_string($design); ?>
                       <?php if ($design == 'other'): ?>
-                        : <?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'otherDesign'); ?>
+                         :<?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'otherDesign'); ?>
                       <?php endif; ?>
                     </li>
                   <?php endforeach; ?>
@@ -187,7 +187,7 @@
                     <li>
                       <?php print obiba_mica_commons_clean_string($recruitment) ?>
                       <?php if ($recruitment == 'other'): ?>
-                        : <?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'otherRecruitment'); ?>
+                         :<?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'otherRecruitment'); ?>
                       <?php endif; ?>
                     </li>
                   <?php endforeach; ?>
