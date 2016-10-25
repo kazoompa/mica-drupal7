@@ -333,7 +333,7 @@
               <tr>
                 <th><?php print t('Status details'); ?></th>
                 <td>
-                  <span><?php print t(ucfirst($variable_harmonization['status_detail'])) ?></span>
+                  <span><?php print ucfirst($variable_harmonization['status_detail']); ?></span>
                 </td>
               </tr>
               <?php endif ?>

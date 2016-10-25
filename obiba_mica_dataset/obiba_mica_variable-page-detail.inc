@@ -275,7 +275,7 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable) {
             'title' => $variable_title,
           ),
         )),
-        $status_detail,
+        ucfirst($status_detail),
         obiba_mica_dataset_variable_html_truncated(
           obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'comment', array(
             'maelstrom',
