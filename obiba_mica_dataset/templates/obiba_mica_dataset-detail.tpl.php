@@ -120,10 +120,26 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
       <?php print (!empty($file_browser) ? $file_browser : $attachments); ?>
     </section>
   <?php endif; ?>
+  
+  <section>
+    <!-- NETWORKS -->
+    <?php if (!empty($dataset_type_dto->networkTables)) : ?>
+      <div>
+        <h2><?php print variable_get_value('networks_section_label') ?></h2>
 
-  <!-- STUDIES -->
-  <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables))): ?>
-    <section>
+        <div id="networks-table">
+          <div class="row">
+            <div class="col-lg-12 col-xs-12">
+              <table class="table table-striped" id="table-networks"></table>
+            </div>
+          </div>
+        </div>
+      </div>      
+    
+    <?php endif; ?>  
+    
+    <!-- STUDIES -->
+    <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables))): ?>
       <h2>
         <?php
         if (!empty($dataset_type_dto->project)):
@@ -223,8 +239,8 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
           </div>
         </div>
       <?php endif ?>
-    </section>
-  <?php endif ?>
+    <?php endif ?>
+  </section>  
 
   <!-- COVERAGE -->
   <?php if (!empty($coverage)): ?>
