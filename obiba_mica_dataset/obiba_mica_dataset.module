@@ -201,7 +201,7 @@ function obiba_mica_dataset_menu() {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function  obiba_mica_dataset_form_obiba_mica_content_pages_admin_settings_alter(&$form, &$form_state, $form_id){
+function obiba_mica_dataset_form_obiba_mica_content_pages_admin_settings_alter(&$form, &$form_state, $form_id) {
   obiba_mica_dataset_admin_settings($form);
 }
 
@@ -288,7 +288,7 @@ function obiba_mica_dataset_theme($existing, $type, $theme, $path) {
 
 /**
  * Get datasets studies
- * 
+ *
  * @param $study_id
  * @param null $resource
  * @return mixed|null
@@ -362,7 +362,7 @@ function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = N
               'external' => TRUE,
               'attributes' => array(
                 'data-toggle' => 'modal',
-                'data-target' => MicaClientPathHelpers::studyPopulationDceModalTarget($study_table->studyId, $study_table->populationId , $study_table->dataCollectionEventId),
+                'data-target' => MicaClientPathHelpers::studyPopulationDceModalTarget($study_table->studyId, $study_table->populationId, $study_table->dataCollectionEventId),
               ),
             )) . '</li>';
           $dce_names[] = $dce_name;
@@ -400,10 +400,10 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
 
   $dataset_rows = array();
   $summaries = $datasets->getSummaries();
-  $total_nb_variables = NULL;
   if (empty($summaries)) {
     return NULL;
-  } else {
+  }
+  else {
     foreach ($summaries as $key_dataset => $summary) {
       if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables)) {
         $variable_nbr_row = $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables;
@@ -414,37 +414,35 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
           'network(in(Mica_network.id,' . $network_id . '))'
         );
       }
+
+      $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
+      $dataset_type = $summary->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
+      $dataset_type_name = $summary->variableType == 'Study' ? t('Study dataset') : t('Harmonization dataset');
+
+      $dataset_rows[$key_dataset] = array(
+        'data' => array(
+          'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id),
+          'type' => $dataset_type_name,
+          'desc' => !empty($nb_variables) ? $nb_variables : '-',
+        ),
+      );
     }
-    $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
-    $dataset_type = $summary->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
-    $dataset_type_name = $summary->variableType == 'Study' ? t('Study dataset') : t('Harmonization dataset');
 
-    $dataset_rows[$key_dataset] = array(
-      'data' => array(
-        'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id),
-        'type' => $dataset_type_name,
-        'desc' => !empty($nb_variables) ? $nb_variables : '-',
-      ),
+    $dataset['dataset-tab'] = theme(
+      'table',
+      array(
+        'header' => array(
+          t('Name'),
+          t('Type'),
+          t('Variables'),
+        ),
+        'rows' => $dataset_rows,
+        'empty' => variable_get_value('datasets_empty_label'),
+        'sticky' => FALSE,
+      )
     );
+    return $dataset;
   }
-  if (!empty($total_nb_variables)) {
-    $dataset['total_variable_nbr'] = $total_nb_variables;
-  }
-
-  $dataset['dataset-tab'] = theme(
-    'table',
-    array(
-      'header' => array(
-        t('Name'),
-        t('Type'),
-        t('Variables'),
-      ),
-      'rows' => $dataset_rows,
-      'empty' => variable_get_value('datasets_empty_label'),
-      'sticky' => FALSE,
-    )
-  );
-  return $dataset;
 }
 
 /**
