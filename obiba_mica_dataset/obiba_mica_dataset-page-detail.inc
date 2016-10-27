@@ -61,7 +61,9 @@ function obiba_mica_dataset_page_detail($dataset_id) {
       obiba_mica_dataset_studies_datatable_init($dataset_type_dto);
     }
 
-    obiba_mica_dataset_networks_datatable_init($dataset_type_dto);
+    if (!empty($dataset_type_dto->networkTables)) {
+      obiba_mica_dataset_networks_datatable_init($dataset_type_dto);
+    }
 
     $dataset_cache_coverage = obiba_mica_commons_get_cache('dataset_coverage-' . $dataset_dto->id);
     if (!empty($dataset_cache_coverage)) {
