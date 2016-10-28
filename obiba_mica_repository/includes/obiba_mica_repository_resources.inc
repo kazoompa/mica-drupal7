@@ -38,11 +38,9 @@ class ObibaSearchResources extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $array_response = json_decode($data);
-        $is_not_empty_stored_data = $this->IsNotEmptyStoredData('repository-' . $resources, $array_response);
-        if($is_not_empty_stored_data){
-          $this->result_resource_query = $array_response;
+        $this->result_resource_query = $array_response;
+        if($this->canCacheResponse('repository-' . $resources, $array_response)){
           obiba_mica_commons_set_cache('repository-' . $resources, $array_response);
-          return $this->result_resource_query;
         }
       }
       catch (HttpClientException $e) {
@@ -217,55 +215,44 @@ class ObibaSearchResources extends MicaClient {
     return $query_search;
   }
 
-  public function IsNotEmptyStoredData($resources, $stored_data) {
+  public function canCacheResponse($resources, $stored_data) {
+    if (empty($stored_data)) return FALSE;
+
     $entity_resource = explode('/', $resources);
     switch ($entity_resource[1]) {
       case 'taxonomy':
-        if (!empty($stored_data)) {
-          return TRUE;
-        }
-        break;
       case 'taxonomies' :
-        if (!empty($stored_data)) {
-          return TRUE;
-        }
-        break;
+        return TRUE;
 
-      case 'variables' :
+      case 'variables' : {
         $coverage_resource = explode('?', $entity_resource[2]);
-        if ($coverage_resource[0] !== '_coverage') {
-          if (!empty($stored_data->variableResultDto->totalHits)) {
-            return TRUE;
-          }
+        if ($coverage_resource[0] === '_coverage') {
+          return !empty($stored_data->taxonomyHeaders) ||
+          !empty($stored_data->vocabularyHeaders) ||
+          !empty($stored_data->termHeaders) ||
+          !empty($stored_data->rows);
         }
-        else {
-          if (!empty($stored_data->taxonomyHeaders) ||
-            !empty($stored_data->vocabularyHeaders) ||
-            !empty($stored_data->termHeaders) ||
-            !empty($stored_data->rows)
-          ) {
-            return TRUE;
-          }
-        }
-        break;
+
+        // fall through
+      }
+
       case 'datasets' :
-        if (!empty($stored_data->datasetResultDto->totalHits)) {
-          return TRUE;
-        }
-        break;
       case 'studies' :
-        if (!empty($stored_data->studyResultDto->totalHits)) {
-          return TRUE;
-        }
-        break;
       case 'networks' :
-        if (!empty($stored_data->networkResultDto->totalHits)) {
-          return TRUE;
-        }
-        break;
-      default :
-        return FALSE;
+        return $this->isSearchResultEmpty($stored_data);
     }
+
+    return FALSE;
+  }
+
+  private function isSearchResultEmpty($result) {
+    foreach ($result as $key => $value) {
+      if (!empty($value) && !empty($value->totalHits)) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
   }
 
 }
