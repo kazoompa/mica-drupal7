@@ -625,10 +625,6 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                 'maelstrom',
                 'Mlstr_harmo',
               ))));
-              $status_detail = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status_detail', array(
-                'Mlstr_harmo',
-              ))));
-              $status_detail = empty($status_detail) ? $status_detail : t(ucfirst($status_detail));
               $harmonized_variable_id = $variable_summary->resolver->id;
               $variable_title = $variable_summary->resolver->name . ' -- ' . $acronym;
 
@@ -637,7 +633,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
               }
 
               if (empty($status)) {
-                $icon_alert_no_status = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" data-original-title="' . $status_detail . '"></span>';
+                $icon_alert_no_status = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" data-original-title="' . t('No status') . '"></span>';
                 $row[$key_row] = l($icon_alert_no_status, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,
@@ -678,17 +674,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                     ),
                   ));
               }
-              else {
-                $no_value = '-';
-                $row[$key_row] = l($no_value, 'mica/variable/' . $harmonized_variable_id);
-              }
-
-              $found = TRUE;
-              break;
             }
-          }
-          if (!$found) {
-            $row[$key_row] = '<span data-toggle="tooltip"  class="glyphicon glyphicon-question-sign alert-warning" data-original-title="' . t('No status') . '"></span>';
           }
         }
 
