@@ -29,6 +29,7 @@
 
       if (context === document) {
         var divStudies = $('#table-variable-harmonization');
+
         divStudies.dataTable(
           {
             "bAutoWidth": false,
