@@ -15,7 +15,6 @@
 
 (function ($) {
   Drupal.behaviors.micaDataset_Datatable_init = {
-
     invalidate: function (context, parent) {
       if (context === document && $('#table-variables').parents(parent.selector).length > 0) {
         var table = $('#table-variables').dataTable();
@@ -26,6 +25,7 @@
     },
 
     attach: function (context, settings) {
+      $.fn.bsTooltip = $.fn.tooltip.noConflict();
       createDataTable();
     }
   };
@@ -91,7 +91,8 @@
         });
 
         function updateTooltip() {
-          $('span', dataTable.fnGetNodes()).tooltip({
+
+          $('span', dataTable.fnGetNodes()).bsTooltip({
             "delay": 0,
             "track": true,
             "fade": 250

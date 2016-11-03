@@ -15,7 +15,6 @@
         var qCoverage, qNetworks, qDatasets;
         var optionsStudyContent = settings.optionsStudyContent;
 
-
         if (optionsStudyContent) {
 
           if (optionsStudyContent.showCoverage) {
