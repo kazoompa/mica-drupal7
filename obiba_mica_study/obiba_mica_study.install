@@ -26,3 +26,10 @@ function obiba_mica_study_create_node() {
   variable_set('study_list_page', $study_node_page->nid);
 
 }
+
+function obiba_mica_study_update_7501() {
+  if (!empty(variable_get('obiba-time-line-version', '1.0'))) {
+    variable_set('old_obiba-time-line-version', variable_get('obiba-time-line-version', '1.0'));
+  }
+  variable_set('obiba-time-line-version', '1.0.1');
+}

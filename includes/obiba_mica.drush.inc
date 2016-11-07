@@ -112,10 +112,30 @@ function obiba_mica_drush_timeline_download() {
   $svn_cmd = 'wget  https://github.com/obiba/mica-study-timeline/archive/' . $version_time_line . '.zip';
   if (drush_shell_exec($svn_cmd)) {
     drush_log(dt('mica-study-timeline  was downloaded to !path.', array('!path' => ' ' . $path)), 'success');
+    $lib_old_version = variable_get('old_obiba-time-line-version');
+    $old_lib_folder = "$path/mica-study-timeline-$lib_old_version";
+    drush_log(dt('delete old lib !version in folder !folder',
+      array(
+        '!version' => $lib_old_version,
+        '!folder' => $old_lib_folder
+      )), 'success');
+
+    if (!empty($lib_old_version) && is_dir($old_lib_folder)) {
+      $delete_old_lib_folder = "rm -rf $old_lib_folder";
+      if (!drush_shell_exec($delete_old_lib_folder)) {
+        drush_log(dt('Can\'t delete current timeline lib folder @working_path/@folder',
+          array(
+            '@folder' => $lib_old_version,
+            '@working_path' => $path
+          )), 'error');
+        die;
+      }
+    }
+
     $unzip_cmd = 'unzip ' . $version_time_line . '.zip -d .';
     if (drush_shell_exec($unzip_cmd)) {
-      drush_log(dt('mica-study-timeline Unzipped  to !path.', array('!path' => 'mica-study-timeline-master')), 'success');
       $timeline_lib_path = 'mica-study-timeline-' . $version_time_line;
+      drush_log(dt('mica-study-timeline Unzipped  to !path.', array('!path' => 'mica-study-timeline-master')), 'success');
       chdir($timeline_lib_path);
       $cmd_get_d3 = 'bower --allow-root install ; cp bower_components/d3/d3.min.js dist/  ; mv ../' . $version_time_line . '.zip bower_components/';
       if (drush_shell_exec($cmd_get_d3)) {
@@ -126,8 +146,8 @@ function obiba_mica_drush_timeline_download() {
           drush_log(dt('Timeline library successfully installed'), 'success');
         }
       }
-
     }
+
   }
   else {
     drush_log(dt('Drush was unable to download mica-study-timeline to !path.', array('!path' => ' ' . $path)) . '<br/>' . dt('Attempted command: !wget.', array('!wget' => '<code>' . $svn_cmd . '</code>')), 'error');
