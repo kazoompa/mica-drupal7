@@ -621,9 +621,15 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
             if (($variable_summary->resolver->studyId == $opal_table->studyId && $variable_summary->resolver->networkTableId == $opal_table->networkId)
               && $variable_summary->resolver->project == $opal_table->project
               && $variable_summary->resolver->table == $opal_table->table) {
-              $status = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status', array(
+              $status = obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status', array(
                 'Mlstr_harmo',
-              ))));
+              ));
+              if($status == "impossible"){
+                $status = variable_get_value('dataset_harmonization_impossible_label');
+              }
+              else{
+              $status = trim(strtolower($status));
+              }
               $status_detail = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status_detail', array(
                 'Mlstr_harmo',
               ))));

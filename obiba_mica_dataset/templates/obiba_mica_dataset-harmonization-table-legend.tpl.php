@@ -26,16 +26,16 @@
   <div>
     <i class="glyphicon glyphicon-question-sign alert-warning"></i>
     <h6><?php print t('Undetermined') ?></h6>
-    <?php print ' - ' . t('harmonization status not determined') ?>
+    <?php print ' - ' . variable_get_value('dataset_harmonization_undetermined_description') ?>
   </div>
   <div>
     <i class="glyphicon glyphicon-ok alert-success"></i>
     <h6><?php print t('Complete') ?></h6>
-    <?php print ' - ' . t('study-specific variable is the same as DataSchema variable (status = identical) or needs transformation to generate DataSchema variable (status = compatible)') ?>
+    <?php print ' - ' . variable_get_value('dataset_harmonization_complete_description') ?>
   </div>
   <div>
     <i class="glyphicon <?php print ObibaDatasetConstants::getIcon(); ?> "></i>
     <h6><?php print variable_get_value('dataset_harmonization_impossible_label'); ?></h6>
-    <?php print ' - ' . t('study does not collect DataSchema variable (status = unavailable) or cannot be used to generate DataSchema variable (status = incompatible)') ?>
+    <?php print ' - ' . variable_get_value('dataset_harmonization_impossible_description') ?>
   </div>
 </div>

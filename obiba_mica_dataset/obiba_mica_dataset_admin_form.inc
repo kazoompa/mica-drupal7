@@ -90,6 +90,33 @@ function _obiba_mica_dataset_settings_dataset_content(&$form) {
     '#default_value' => variable_get_value('dataset_harmonization_impossible_label'),
     '#description' => $info['description'],
   );
+
+  $info = variable_get_info('dataset_harmonization_complete_description');
+  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_complete_description'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#maxlength' => 255,
+    '#default_value' => variable_get_value('dataset_harmonization_complete_description'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('dataset_harmonization_impossible_description');
+  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_impossible_description'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#maxlength' => 255,
+    '#default_value' => variable_get_value('dataset_harmonization_impossible_description'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('dataset_harmonization_undetermined_description');
+  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_undetermined_description'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#maxlength' => 255,
+    '#default_value' => variable_get_value('dataset_harmonization_undetermined_description'),
+    '#description' => $info['description'],
+  );
 }
 
 /**
