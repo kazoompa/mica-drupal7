@@ -105,6 +105,14 @@ function _obiba_mica_dataset_settings_variable_content(&$form) {
     '#collapsible' => FALSE,
   );
 
+  $info = variable_get_info('mica_all_variables_dataschema');
+  $form['content_display_settings']['variable_form']['mica_all_variables_dataschema'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_all_variables_dataschema'),
+    '#description' => $info['description'],
+  );
+
   $info = variable_get_info('mica_statistics');
   $form['content_display_settings']['variable_form']['mica_statistics'] = array(
     '#type' => 'checkbox',
