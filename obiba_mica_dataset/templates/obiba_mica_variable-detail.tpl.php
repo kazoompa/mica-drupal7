@@ -113,22 +113,18 @@
             <th><?php print t('Variable Type'); ?></th>
             <td>
               <p>
+                <?php $variable_type = $variable_dto->variableType?>
+                <?php if (variable_get_value('mica_all_variables_dataschema')): ?>
+                  <?php $variable_type = t('Dataschema'); ?>
+                <?php endif; ?>
                 <?php print t('@type Variable', array('@type' =>
-                  $variable_dto->variableType)); ?>
+                  $variable_type)); ?>
                 <?php if ($variable_dto->variableType == 'Harmonized'): ?>
                   <?php print '(' . MicaClientAnchorHelper::variableHarmonized($variable_dto) . ')'; ?>
                 <?php endif; ?>
               </p>
             </td>
           </tr>
-
-          <?php if (!empty($variable_dto->comment)): ?>
-            <tr>
-              <th><?php print t('Comment'); ?></th>
-              <td><p><?php print $variable_dto->comment; ?></p></td>
-            </tr>
-          <?php endif; ?>
-
 
           </tbody>
         </table>
@@ -340,7 +336,7 @@
               <tr>
                 <th><?php print t('Comment'); ?></th>
                 <td>
-                  <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : $variable_harmonization['comment']; ?></p>
+                  <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : obiba_mica_commons_markdown($variable_harmonization['comment']); ?></p>
                 </td>
               </tr>
               </tbody>

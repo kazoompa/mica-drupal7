@@ -283,7 +283,10 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $ha
         'maelstrom',
         'Mlstr_harmo',
       ));
-
+      $comment =  obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'comment', array(
+        'maelstrom',
+        'Mlstr_harmo',
+        ));
       $rows[] = array(
         '<p>' .
         l($variable_title, 'mica/variable/' . $harmonized_variable_id, array(
@@ -300,11 +303,7 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $ha
           ),
         )),
         $has_status_detail ? ucfirst($status_detail) : '' ,
-        obiba_mica_dataset_variable_html_truncated(
-          obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'comment', array(
-            'maelstrom',
-            'Mlstr_harmo',
-          )), t('comment'), 200),
+         !empty($comment)?obiba_mica_commons_markdown($comment):'-',
         $variable_title_key,
       );
 

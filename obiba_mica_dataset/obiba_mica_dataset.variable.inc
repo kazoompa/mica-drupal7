@@ -103,6 +103,12 @@ function _obiba_mica_dataset_variable_variable_content(&$variable) {
     'type' => 'string',
     'default' => TRUE,
   );
+  $variable['mica_all_variables_dataschema'] = array(
+    'title' => t('Make all Variables type Dataschema'),
+    'description' => t('If selected, all variables will display their type as Dataschema. '),
+    'type' => 'boolean',
+    'default' => FALSE,
+  );
   $variable['dataset_detailed_var_stats'] = array(
     'title' => t('Show detailed harmonization variable data statistics'),
     'description' => t('If selected, detailed data summary and crosstab statistics about each harmonized variables will be displayed when querying the harmonization variable data statistics.'),
