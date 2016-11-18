@@ -596,16 +596,17 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
     if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
 
       foreach ($dataset_harmonizations_dto->variableHarmonizations as $variable_harmonization) {
-
+        $found = TRUE;
         $row = array(
           "index" => '',
           "variable" => l($variable_harmonization->resolver->name, 'mica/variable/' . $variable_harmonization->resolver->id),
         );
 
         $opal_tables = _obiba_mica_dataset_harmonizations_get_all_opal_tables($dataset_type_dto);
-
-        foreach ($opal_tables as $opal_table) {
+        if (empty($variable_harmonization->datasetVariableSummaries)) {
           $found = FALSE;
+        }
+        foreach ($opal_tables as $opal_table) {
           $entity_summary = empty($opal_table->studySummary) ? $opal_table->networkSummary : $opal_table->studySummary;
           $acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
 
@@ -616,7 +617,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
           }
 
           $key_row = str_replace(' ', '_', $key_row);
-
+          if ($found) {
           foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
             if (($variable_summary->resolver->studyId == $opal_table->studyId && $variable_summary->resolver->networkTableId == $opal_table->networkId)
               && $variable_summary->resolver->project == $opal_table->project
@@ -624,16 +625,10 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
               $status = obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status', array(
                 'Mlstr_harmo',
               ));
-              if($status == "impossible"){
-                $status = variable_get_value('dataset_harmonization_impossible_label');
-              }
-              else{
-              $status = trim(strtolower($status));
-              }
               $status_detail = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status_detail', array(
                 'Mlstr_harmo',
               ))));
-              $status_detail = empty($status_detail) ? ucfirst(preg_replace('/[-_]+/', ' ', $status)) : ucfirst(preg_replace('/[-_]+/', ' ', $status_detail));
+              $status_detail = empty($status_detail) ? '' : ucfirst(preg_replace('/[-_]+/', ' ', $status_detail));
               $harmonized_variable_id = $variable_summary->resolver->id;
               $variable_title = $variable_summary->resolver->name . ' -- ' . $acronym;
 
@@ -684,6 +679,10 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                   ));
               }
             }
+          }
+        }
+          else{
+            $row[$key_row] ='-';
           }
         }
 
