@@ -642,47 +642,42 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                 $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($opal_table, 'name') . ')';
               }
 
-              if (empty($status)) {
-                $icon_alert_no_status = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" title="' . t('No status') . '"></span>';
-                $row[$key_row] = l($icon_alert_no_status, 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title,
-                    ),
-                  ));
-              }
-              elseif ($status == 'complete') {
-                $icon_success_complete = '<span data-toggle="tooltip" class="glyphicon glyphicon-ok alert-success" title="' . $status_detail . '"></span>';
-                $row[$key_row] = l($icon_success_complete, 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title,
-                    ),
-                  ));
-              }
-              elseif ($status == 'impossible') {
-                $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
-                  ObibaDatasetConstants::getIcon()
-                  . '" title="' . $status_detail . '"></span>';
-                $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title,
-                    ),
-                  ));
-              }
-              elseif ($status == 'undetermined') {
-                $icon_warning_undetermined = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" title="' . $status_detail . '"></span>';
-                $row[$key_row] = l($icon_warning_undetermined, 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title,
-                    ),
-                  ));
+              switch($status){
+                case 'complete':
+                  $icon_success_complete = '<span data-toggle="tooltip" class="glyphicon glyphicon-ok alert-success" title="' . $status_detail . '"></span>';
+                  $row[$key_row] = l($icon_success_complete, 'mica/variable/' . $harmonized_variable_id,
+                    array(
+                      'html' => TRUE,
+                      'query' => array(
+                        'title' => $variable_title,
+                      ),
+                    ));
+                  break;
+                case 'impossible':
+                  $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
+                    ObibaDatasetConstants::getIcon()
+                    . '" title="' . $status_detail . '"></span>';
+                  $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
+                    array(
+                      'html' => TRUE,
+                      'query' => array(
+                        'title' => $variable_title,
+                      ),
+                    ));
+                  break;
+                case 'undetermined':
+                  $icon_warning_undetermined = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" title="' . $status_detail . '"></span>';
+                  $row[$key_row] = l($icon_warning_undetermined, 'mica/variable/' . $harmonized_variable_id,
+                    array(
+                      'html' => TRUE,
+                      'query' => array(
+                        'title' => $variable_title,
+                      ),
+                    ));
+                  break;
+                default:
+                  $row[$key_row] ='-';
+                  break;
               }
             }
           }
