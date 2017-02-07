@@ -150,12 +150,12 @@ function obiba_mica_network_page_detail($network_id) {
 
 function obiba_mica_network_page_detail_datasets($network_id) {
   $output = NULL;
-  $network_resource = new MicaNetworkResource();
-  $network_dto = $network_resource->get_network($network_id);
+  $dataset_output = obiba_mica_dataset_get_datasets_network(NULL, 'HarmonizationDataset', $network_id);
 
-  $studies = $network_dto != null ? $network_dto->studyIds : array();
-
-  obiba_mica_study_page_detail_datasets(implode(',', $studies), 'HarmonizationDataset', $network_id);
+  if (!empty($dataset_output)) {
+    $themed_datasets = theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
+    print $themed_datasets;
+  }
 }
 
 function obiba_mica_network_statistics_angular_options($networks_id) {
