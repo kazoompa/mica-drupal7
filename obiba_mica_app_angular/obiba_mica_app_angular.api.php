@@ -39,7 +39,7 @@ function hook_load_menus() {
  * Load angular application javascript within the module.
  */
 function hook_get_js($weight_js) {
-  if (current_path() == DrupalMicaDatasetResource::CROSSTAB) {
+  if (current_path() == ObibaAnalysisResources::CROSSTAB) {
     $module_path = drupal_get_path('module', 'obiba_mica_dataset');
     $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
     ksort($js);
