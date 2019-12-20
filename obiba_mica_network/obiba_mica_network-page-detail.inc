@@ -192,7 +192,8 @@ function obiba_mica_network_ng_coverage($network_id) {
       DrupalMicaClient\RqlQueryBuilder::network_query_charts_variables_template(),
       $study_ids,
       $localize->getTranslation('studies'),
-      'network');
+      'network',
+      true); // include terms
   }
 }
 

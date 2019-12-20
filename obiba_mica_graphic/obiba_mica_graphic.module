@@ -353,13 +353,13 @@ function _obiba_mica_graphic_colors_options_array_sort($a, $b) {
   return 0;
 }
 
-function obiba_mica_graphics_do_coverage_query($query) {
+function obiba_mica_graphics_do_coverage_query($query, $includeTerms = false) {
   $search_resources = new ObibaSearchResources();
-  $coverages = $search_resources->taxonomiesChartRql($query, 'variables', 'coverage');
+  $coverages = $search_resources->taxonomiesChartRql($query, 'variables', 'coverage', $includeTerms);
   return $coverages;
 }
 
-function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $entity_id, $empty_value_key = NULL, $entity_graph = NULL) {
+function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $entity_id, $empty_value_key = NULL, $entity_graph = NULL, $includeTerms = false) {
   $cached_chart = obiba_mica_commons_get_cache(__FUNCTION__ . $query);
   if(!empty($cached_chart)){
       $response = $cached_chart;
@@ -379,7 +379,7 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
     $response = new stdClass();
     $response->charts = array();
     $taxonomies_config = array_values(obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures'));
-    $coverages = obiba_mica_graphics_do_coverage_query($query);
+    $coverages = obiba_mica_graphics_do_coverage_query($query, $includeTerms);
     $base_path = !empty($GLOBALS['conf']['clean_url']) ? base_path() : base_path().'?q=';
 
     $response = new stdClass();
